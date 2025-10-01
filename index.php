@@ -32,7 +32,7 @@ else if (isset($_POST['email']) && isset($_POST['pass'])) {
     die();
 }
 else {
-    header('http://localhost/');
+    include('loginform.html');
     die();
 }
 
@@ -49,7 +49,7 @@ function grab_login_from_cookie() {
     // handle if the cookie is bad
     if ($returned_id->num_rows == 0) {
         setcookie('auth_token', '', time() - 1);          // delete the cookie, its bad.
-        header('http://localhost/');                                    // send them home
+        include('loginform.html');                                              // send them home
         die();
     }
 
@@ -80,7 +80,7 @@ function grab_login_from_email_pass() {
 
     // if no hash present
     if ($returned_hash->num_rows == 0) {                                        // no account with that email, get out of here
-        header('http://localhost/');
+        include('loginform.html');
         echo('Incorrect login');
         die();
     }
@@ -93,7 +93,7 @@ function grab_login_from_email_pass() {
 
     // mismatch
     if (!password_verify($pass, $passHash)) {                   // password verification failed, get out of here
-        header('http://localhost/');
+        include('loginform.html');
         echo('Incorrect login');
         die();
     }
@@ -173,6 +173,8 @@ function send_to_dashboard($level) {
         case 4:                                                                 // admins
             header('http://localhost/admin/');  
             break;
+        default:
+            include('loginform.html');
     }
 }
 
