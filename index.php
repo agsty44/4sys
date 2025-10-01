@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 // if not, we will generate a token for the user.
 
 // check existence of cookie
-if (isset($_COOKIE['authToken'])) {
+if (isset($_COOKIE['auth_token'])) {
     grab_login_from_cookie();
     die();
 }
@@ -39,24 +39,24 @@ else {
 function grab_login_from_cookie() {
     global $conn;
 
-    $token = $_COOKIE['authToken'];                                             // extract into a variable for cleaner code
+    $token = $_COOKIE['auth_token'];                                            // extract into a variable for cleaner code
     $sql = 'SELECT `AccessTier` FROM `People` WHERE `LoginToken` = ?';          // this is the layout of our SQL statement to return a userID.
     $query = $conn->prepare($sql);                                       // prepare statement for execution
     $query->bind_param('s', $token);                               // bind parameters
     $query->execute();                                                          // execute
-    $returnedID = $query->get_result();                                         // get results
+    $returned_id = $query->get_result();                                        // get results
 
     // handle if the cookie is bad
-    if ($returnedID->num_rows == 0) {
-        setcookie('authToken', '', time() - 1);           // delete the cookie, its bad.
+    if ($returned_id->num_rows == 0) {
+        setcookie('auth_token', '', time() - 1);          // delete the cookie, its bad.
         header('http://localhost/');                                    // send them home
         die();
     }
 
     // if the user logs in with a good token we should refresh it
-    setcookie('authToken', $token, time() + 86400 * 7);   // set cookie life to 1 day (86400 seconds) * 7
+    setcookie('auth_token', $token, time() + 86400 * 7);  // set cookie life to 1 day (86400 seconds) * 7
 
-    $record = $returnedID->fetch_assoc();                                       // fetch record
+    $record = $returned_id->fetch_assoc();                                      // fetch record
     $accessTier = $record['AccessTier'];                                        // return access level to send them to the right dashboard.
 
     send_to_dashboard($accessTier);
@@ -71,23 +71,25 @@ function grab_login_from_email_pass() {
     $pass = $_POST['pass'];
     
     // first we need the users password (if it exists)
-    $sql = 'SELECT `AccessTier`, `PassHash` FROM `People` WHERE `Email` = ?';                 // SQL layout
+    $sql = 'SELECT `PersonID`, `AccessTier`, `PassHash` ' .
+           'FROM `People` WHERE `Email` = ?';                                   // SQL layout
     $query = $conn->prepare($sql);                                       // prepare statement for execution
     $query->bind_param('s', $email);                               // bind parameters
     $query->execute();                                                          // execute
-    $returnedHash = $query->get_result();                                       // get results
+    $returned_hash = $query->get_result();                                      // get results
 
     // if no hash present
-    if ($returnedHash->num_rows == 0) {                                         // no account with that email, get out of here
+    if ($returned_hash->num_rows == 0) {                                        // no account with that email, get out of here
         header('http://localhost/');
         echo('Incorrect login');
         die();
     }
 
     // now do comparison
-    $record = $returnedHash->fetch_assoc();                                     // fetch record
+    $record = $returned_hash->fetch_assoc();                                    // fetch record
     $passHash = $record['PassHash'];                                            // return passhash for verification
-    $accessTier = $record['AccessTier']; 
+    $accessTier = $record['AccessTier'];                                        // return access tier for sorting
+    $identifier = $record['PersonID'];                                          // return identifier
 
     // mismatch
     if (!password_verify($pass, $passHash)) {                   // password verification failed, get out of here
@@ -96,9 +98,61 @@ function grab_login_from_email_pass() {
         die();
     }
 
-    send_to_dashboard($accessTier);
-
     $query->close();
+
+    //check for an access token in db, and generate one if needed.
+    $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
+    $query = $conn->prepare($sql);                                       // prepare statement for execution
+    $query->bind_param('s', $email);                               // bind parameters
+    $query->execute();                                                          // execute
+    $returned_token = $query->get_result();                                     // get results
+    $record = $returned_token->fetch_assoc();                                   // fetch record
+    $access_token = $record['LoginToken'];                                      // return login token to check
+    $query->close();                                                            // close query
+
+    //handle existence of token
+    if ($access_token == '') {
+        $uniqueness_of_token = 1;
+
+        // until that token returns no rows, generate a new one.
+        while ($uniqueness_of_token != 0) {
+            //upload new token
+            $token_number = random_int(0, 999999999999);              // generate a number up to 1 trillion
+            $token_hash = password_hash($token_number);               // convert it to a bcrypt hash
+
+            //check for existence of token
+            $sql = 'SELECT * FROM `People` WHERE `LoginToken` = ?';             // count the rows
+            $query = $conn->prepare($sql);                               // prepare
+            $query->bind_param('s', $token_hash);                  // bind parameters
+            $query->execute();                                                  // execute
+            $token_integrity = $query->get_result();                            // get result
+            $uniqueness_of_token = $token_integrity->num_rows;                  // check uniqueness
+        }                                                                       // when we exit the loop, the token will be confirmed to be unique
+
+        $query->close();                                                        // close query
+
+        // insert the new token
+        $sql = 'UPDATE `People` SET `LoginToken` = ? WHERE `PersonID` = ?';     // update the login token that matches the person id
+        $query = $conn->prepare($sql);                                   // prepare
+        $query->bind_param('si',
+        $token_hash, $identifier);                                 // bind parameters
+        $query->execute();                                                      // execute
+        $query->close();                                                        // close query
+    }
+
+    $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
+    $query = $conn->prepare($sql);                                       // prepare statement for execution
+    $query->bind_param('s', $email);                               // bind parameters
+    $query->execute();                                                          // execute
+    $returned_token = $query->get_result();                                     // get results
+    $record = $returned_token->fetch_assoc();                                   // fetch record
+    $access_token = $record['LoginToken'];                                      // return login token to check
+    $query->close();                                                            // close query
+
+    // finally we can set the cookie of the auth token.
+    setcookie('auth_token', $access_token, time() + 86400 * 7);
+
+    send_to_dashboard($accessTier);
 }
 
 function send_to_dashboard($level) {
