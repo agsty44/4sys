@@ -118,7 +118,9 @@ function grab_login_from_email_pass() {
         while ($uniqueness_of_token != 0) {
             //upload new token
             $token_number = random_int(0, 999999999999);              // generate a number up to 1 trillion
-            $token_hash = password_hash($token_number);               // convert it to a bcrypt hash
+            $token_number = (string) $token_number;                             // string conversion
+            $token_hash = password_hash($token_number,
+            PASSWORD_DEFAULT);                                            // convert it to a bcrypt hash
 
             //check for existence of token
             $sql = 'SELECT * FROM `People` WHERE `LoginToken` = ?';             // count the rows
