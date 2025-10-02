@@ -48,8 +48,8 @@ function grab_login_from_email_pass() {
     // first we need the users password (if it exists)
     $sql = 'SELECT `PersonID`, `AccessTier`, `PassHash` ' .
            'FROM `People` WHERE `Email` = ?';                                   // SQL layout
-    $query = $conn->prepare($sql);                                       // prepare statement for execution
-    $query->bind_param('s', $email);                               // bind parameters
+    $query = $conn->prepare($sql);                                              // prepare statement for execution
+    $query->bind_param('s', $email);                                            // bind parameters
     $query->execute();                                                          // execute
     $returned_hash = $query->get_result();                                      // get results
 
@@ -92,15 +92,10 @@ function grab_login_from_email_pass() {
         // until that token returns no rows, generate a new one.
         while ($uniqueness_of_token != 0) {
             //upload new token
-<<<<<<< HEAD
             $token_number = random_int(0, 999999999999);                        // generate a number up to 1 trillion
-            $token_hash = password_hash($token_number);                         // convert it to a bcrypt hash
-=======
-            $token_number = random_int(0, 999999999999);              // generate a number up to 1 trillion
             $token_number = (string) $token_number;                             // string conversion
             $token_hash = password_hash($token_number,
-            PASSWORD_DEFAULT);                                            // convert it to a bcrypt hash
->>>>>>> 5742dcfdca2635bc20388ae9de5d3ccfe4191acb
+            PASSWORD_DEFAULT);                                                  // convert it to a bcrypt hash
 
             //check for existence of token
             $sql = 'SELECT * FROM `People` WHERE `LoginToken` = ?';             // count the rows
@@ -122,8 +117,8 @@ function grab_login_from_email_pass() {
     }
 
     $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
-    $query = $conn->prepare($sql);                                       // prepare statement for execution
-    $query->bind_param('s', $email);                               // bind parameters
+    $query = $conn->prepare($sql);                                              // prepare statement for execution
+    $query->bind_param('s', $email);                                            // bind parameters
     $query->execute();                                                          // execute
     $returned_token = $query->get_result();                                     // get results
     $record = $returned_token->fetch_assoc();                                   // fetch record
@@ -135,7 +130,4 @@ function grab_login_from_email_pass() {
 
     send_to_dashboard($accessTier);
 }
-
-
-
 ?>
