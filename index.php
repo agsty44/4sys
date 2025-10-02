@@ -15,10 +15,12 @@ include('header.php');
 // check existence of cookie
 if (isset($_COOKIE['auth_token'])) {
     grab_login_from_cookie();
+    send_to_dashboard($accessTier);
     die();
 }
 else if (isset($_POST['email']) && isset($_POST['pass'])) {
     grab_login_from_email_pass();
+    send_to_dashboard($accessTier);
     die();
 }
 else {
@@ -114,7 +116,5 @@ function grab_login_from_email_pass() {
 
     // finally we can set the cookie of the auth token.
     setcookie('auth_token', $access_token, time() + 86400 * 7);
-
-    send_to_dashboard($accessTier);
 }
 ?>

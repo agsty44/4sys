@@ -57,9 +57,6 @@ function grab_login_from_cookie() {
 
     $record = $returned_id->fetch_assoc();                                      // fetch record
     $accessTier = $record['AccessTier'];                                        // return access level to send them to the right dashboard.
-
-    send_to_dashboard($accessTier);
-
     $query->close();                                                            // close stmt
 }
 
