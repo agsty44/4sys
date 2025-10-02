@@ -1,18 +1,5 @@
 <?php
 
-// DB boilerplate:
-
-$server = 'localhost';
-$user = 'root';
-$pass = 'password';
-$db = '4sys_main';
-
-$conn = new mysqli($server, $user, $pass, $db);
-
-if ($conn->connect_error) {
-    die('Failed connect: ' . $conn->connect_error);
-}
-
 // what is this script meant to do?
 // this is the homepage of the website: it should handle all kinds of logins. if someone already has an auth cookie, we should check it and pass them to the right part of the website.
 // first we should check if the login token exists.

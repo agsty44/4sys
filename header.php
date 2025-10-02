@@ -1,5 +1,17 @@
 <?php
 
+// DB boilerplate...
+$server = 'localhost';
+$user = 'root';
+$pass = 'password';
+$db = '4sys_main';
+
+$conn = new mysqli($server, $user, $pass, $db);
+
+if ($conn->connect_error) {
+    die('Failed connect: ' . $conn->connect_error);
+}
+
 function send_to_dashboard($level) {
     // switch case to forward users to the right access page
     switch ($level) {
