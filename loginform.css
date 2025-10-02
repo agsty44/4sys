@@ -12,8 +12,8 @@ body {
 }
 
 #loginformcontainer {
-    width: 20%;
-    height: 40%;
+    width: 40%;
+    height: 20%;
     padding: 5%;
     border: 5px solid grey;
     margin: auto;
