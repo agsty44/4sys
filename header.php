@@ -37,13 +37,16 @@ function send_to_dashboard($level) {
             header('Location: http://localhost:8080/admin/');  
             die();
         default:
-            include('loginform.html');
+            include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');
             die();
     }
 }
 
 function grab_login_from_cookie() {
     global $conn;
+
+    // this returns an access tier given an auth token, and also handles logic for invalid tokens.
+    // if an invalid token is given, the user will be sent to login.
 
     $token = $_COOKIE['auth_token'];                                            // extract into a variable for cleaner code
     $sql = 'SELECT `AccessTier` FROM `People` WHERE `LoginToken` = ?';          // this is the layout of our SQL statement to return a userID.
@@ -55,7 +58,7 @@ function grab_login_from_cookie() {
     // handle if the cookie is bad
     if ($returned_id->num_rows == 0) {
         setcookie('auth_token', '', time() - 1);                                // delete the cookie, its bad.
-        include('/loginform.html');                                              // send them home
+        include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');                                              // send them home
         die();
     }
 
@@ -69,4 +72,22 @@ function grab_login_from_cookie() {
     return $access_tier;
 }
 
+function grab_user_id() {
+    global $conn;
+
+    // this function returns a user's id given their login token. 
+    // this doesn't need to be verified as the function is only every called after
+    // the usage of grab_login_from_cookie(), so valid auth_token is already handled.
+
+    $token = $_COOKIE['auth_token'];                                            // fetch login token
+    $sql = 'SELECT `PersonID` FROM `People` WHERE `LoginToken` = ?';            // sql to fetch a users identifier
+    $query = $conn->prepare($sql);
+    $query->bind_param('s', $token);
+    $query->execute();
+    $returned_id = $query->get_result();
+    $record = $returned_id->fetch_assoc();
+    $identifier = $record['PersonID'];
+    $query->close();
+    return $identifier;
+}
 ?>
