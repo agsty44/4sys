@@ -61,8 +61,10 @@ function grab_login_from_cookie() {
     setcookie('auth_token', $token, time() + 86400 * 7);                        // set cookie life to 1 day (86400 seconds) * 7
 
     $record = $returned_id->fetch_assoc();                                      // fetch record
-    $accessTier = $record['AccessTier'];                                        // return access level to send them to the right dashboard.
+    $access_tier = $record['AccessTier'];                                        // return access level to send them to the right dashboard.
     $query->close();                                                            // close stmt
+
+    return $access_tier;
 }
 
 ?>

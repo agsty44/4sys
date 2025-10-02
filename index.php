@@ -11,18 +11,16 @@
 
 // import header library
 include('header.php');
-// define access tier for later use
-$access_tier = -1;
 
 // check existence of cookie
 if (isset($_COOKIE['auth_token'])) {
-    grab_login_from_cookie();
-    send_to_dashboard($access_tier);
+    $access_param = grab_login_from_cookie();
+    send_to_dashboard($access_param);
     die();
 }
 else if (isset($_POST['email']) && isset($_POST['pass'])) {
-    grab_login_from_email_pass();
-    send_to_dashboard($access_tier);
+    $access_param = grab_login_from_email_pass();
+    send_to_dashboard($access_param);
     die();
 }
 else {
@@ -31,7 +29,7 @@ else {
 }
 
 function grab_login_from_email_pass() {
-    global $conn, $access_tier;
+    global $conn;
 
     $email = $_POST['email'];                                                   // extract POST data
     $pass = $_POST['pass'];
@@ -118,5 +116,7 @@ function grab_login_from_email_pass() {
 
     // finally we can set the cookie of the auth token.
     setcookie('auth_token', $access_token, time() + 86400 * 7);
+
+    return $access_tier;
 }
 ?>
