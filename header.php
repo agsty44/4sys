@@ -1,8 +1,10 @@
 <?php
+/* COMMENTED OUT --- for now...
 // error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+*/
 
 // DB boilerplate...
 $server = 'localhost';
@@ -53,7 +55,7 @@ function grab_login_from_cookie() {
     // handle if the cookie is bad
     if ($returned_id->num_rows == 0) {
         setcookie('auth_token', '', time() - 1);                                // delete the cookie, its bad.
-        include('loginform.html');                                              // send them home
+        include('/loginform.html');                                              // send them home
         die();
     }
 

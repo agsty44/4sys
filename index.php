@@ -10,7 +10,7 @@
 // if not, we will generate a token for the user.
 
 // import header library
-include('header.php');
+include($_SERVER['DOCUMENT_ROOT'] . 'header.php');
 
 // check existence of cookie
 if (isset($_COOKIE['auth_token'])) {
@@ -24,7 +24,7 @@ else if (isset($_POST['email']) && isset($_POST['pass'])) {
     die();
 }
 else {
-    include('loginform.html');
+    include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');
     die();
 }
 
@@ -44,7 +44,7 @@ function grab_login_from_email_pass() {
 
     // if no hash present
     if ($returned_hash->num_rows == 0) {                                        // no account with that email, get out of here
-        include('loginform.html');
+        include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');
         echo('Incorrect login');
         die();
     }
@@ -57,7 +57,7 @@ function grab_login_from_email_pass() {
 
     // mismatch
     if (!password_verify($pass, $pass_hash)) {                                   // password verification failed, get out of here
-        include('loginform.html');
+        include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');
         echo('Incorrect login');
         die();
     }
