@@ -90,4 +90,12 @@ function grab_user_id() {
     $query->close();
     return $identifier;
 }
+
+function is_user_in_right_area($intended_access_level) {
+    $user_access_level = grab_login_from_cookie();                                  // not only check that the login is right, but grab the access level to check this is the right location.
+
+    if ($user_access_level != $intended_access_level) {                             // if the access level is incorrect, we should send them to the right one.
+        send_to_dashboard($user_access_level);
+    }
+}
 ?>
