@@ -69,7 +69,7 @@ function grab_login_from_email_pass() {
     //check for an access token in db, and generate one if needed.
     $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
     $query = $conn->prepare($sql);                                              // prepare statement for execution
-    $query->bind_param('s', $identifier);                                       // bind parameters
+    $query->bind_param('i', $identifier);                                       // bind parameters
     $query->execute();                                                          // execute
     $returned_token = $query->get_result();                                     // get results
     $record = $returned_token->fetch_assoc();                                   // fetch record
@@ -109,7 +109,7 @@ function grab_login_from_email_pass() {
 
     $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
     $query = $conn->prepare($sql);                                              // prepare statement for execution
-    $query->bind_param('s', $email);                                            // bind parameters
+    $query->bind_param('i', $identifier);                                            // bind parameters
     $query->execute();                                                          // execute
     $returned_token = $query->get_result();                                     // get results
     $record = $returned_token->fetch_assoc();                                   // fetch record
