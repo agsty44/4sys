@@ -22,6 +22,9 @@ if ($conn->connect_error) {
 // if the account being logged into has a logintoken, we will set that token to be the cookie
 // if not, we will generate a token for the user.
 
+// import header library
+include('header.php');
+
 // check existence of cookie
 if (isset($_COOKIE['auth_token'])) {
     grab_login_from_cookie();
@@ -34,34 +37,6 @@ else if (isset($_POST['email']) && isset($_POST['pass'])) {
 else {
     include('loginform.html');
     die();
-}
-
-function grab_login_from_cookie() {
-    global $conn;
-
-    $token = $_COOKIE['auth_token'];                                            // extract into a variable for cleaner code
-    $sql = 'SELECT `AccessTier` FROM `People` WHERE `LoginToken` = ?';          // this is the layout of our SQL statement to return a userID.
-    $query = $conn->prepare($sql);                                       // prepare statement for execution
-    $query->bind_param('s', $token);                               // bind parameters
-    $query->execute();                                                          // execute
-    $returned_id = $query->get_result();                                        // get results
-
-    // handle if the cookie is bad
-    if ($returned_id->num_rows == 0) {
-        setcookie('auth_token', '', time() - 1);          // delete the cookie, its bad.
-        include('loginform.html');                                              // send them home
-        die();
-    }
-
-    // if the user logs in with a good token we should refresh it
-    setcookie('auth_token', $token, time() + 86400 * 7);  // set cookie life to 1 day (86400 seconds) * 7
-
-    $record = $returned_id->fetch_assoc();                                      // fetch record
-    $accessTier = $record['AccessTier'];                                        // return access level to send them to the right dashboard.
-
-    send_to_dashboard($accessTier);
-
-    $query->close();                                                            // close stmt
 }
 
 function grab_login_from_email_pass() {
@@ -117,8 +92,15 @@ function grab_login_from_email_pass() {
         // until that token returns no rows, generate a new one.
         while ($uniqueness_of_token != 0) {
             //upload new token
+<<<<<<< HEAD
             $token_number = random_int(0, 999999999999);                        // generate a number up to 1 trillion
             $token_hash = password_hash($token_number);                         // convert it to a bcrypt hash
+=======
+            $token_number = random_int(0, 999999999999);              // generate a number up to 1 trillion
+            $token_number = (string) $token_number;                             // string conversion
+            $token_hash = password_hash($token_number,
+            PASSWORD_DEFAULT);                                            // convert it to a bcrypt hash
+>>>>>>> 5742dcfdca2635bc20388ae9de5d3ccfe4191acb
 
             //check for existence of token
             $sql = 'SELECT * FROM `People` WHERE `LoginToken` = ?';             // count the rows
@@ -154,27 +136,6 @@ function grab_login_from_email_pass() {
     send_to_dashboard($accessTier);
 }
 
-function send_to_dashboard($level) {
-    // switch case to forward users to the right access page
-    switch ($level) {
-        case 0:                                                                 // bus drivers
-            header('http://localhost/bus/');
-            break;
-        case 1:                                                                 // students
-            header('http://localhost/students/');  
-            break;
-        case 2:                                                                 // parents
-            header('http://localhost/parents/');  
-            break;
-        case 3:                                                                 // teachers
-            header('http://localhost/teachers/');  
-            break;
-        case 4:                                                                 // admins
-            header('http://localhost/admin/');  
-            break;
-        default:
-            include('loginform.html');
-    }
-}
+
 
 ?>
