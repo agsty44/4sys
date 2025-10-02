@@ -11,16 +11,18 @@
 
 // import header library
 include('header.php');
+// define access tier for later use
+$access_tier = -1;
 
 // check existence of cookie
 if (isset($_COOKIE['auth_token'])) {
     grab_login_from_cookie();
-    send_to_dashboard($accessTier);
+    send_to_dashboard($access_tier);
     die();
 }
 else if (isset($_POST['email']) && isset($_POST['pass'])) {
     grab_login_from_email_pass();
-    send_to_dashboard($accessTier);
+    send_to_dashboard($access_tier);
     die();
 }
 else {
@@ -29,7 +31,7 @@ else {
 }
 
 function grab_login_from_email_pass() {
-    global $conn;
+    global $conn, $access_tier;
 
     $email = $_POST['email'];                                                   // extract POST data
     $pass = $_POST['pass'];
@@ -51,12 +53,12 @@ function grab_login_from_email_pass() {
 
     // now do comparison
     $record = $returned_hash->fetch_assoc();                                    // fetch record
-    $passHash = $record['PassHash'];                                            // return passhash for verification
-    $accessTier = $record['AccessTier'];                                        // return access tier for sorting
+    $pass_hash = $record['PassHash'];                                            // return passhash for verification
+    $access_tier = $record['AccessTier'];                                        // return access tier for sorting
     $identifier = $record['PersonID'];                                          // return identifier
 
     // mismatch
-    if (!password_verify($pass, $passHash)) {                                   // password verification failed, get out of here
+    if (!password_verify($pass, $pass_hash)) {                                   // password verification failed, get out of here
         include('loginform.html');
         echo('Incorrect login');
         die();

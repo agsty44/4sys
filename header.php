@@ -17,21 +17,22 @@ function send_to_dashboard($level) {
     switch ($level) {
         case 0:                                                                 // bus drivers
             header('http://localhost/bus/');
-            break;
+            die();
         case 1:                                                                 // students
             header('http://localhost/students/');  
-            break;
+            die();
         case 2:                                                                 // parents
             header('http://localhost/parents/');  
-            break;
+            die();
         case 3:                                                                 // teachers
             header('http://localhost/teachers/');  
-            break;
+            die();
         case 4:                                                                 // admins
             header('http://localhost/admin/');  
-            break;
+            die();
         default:
             include('loginform.html');
+            die();
     }
 }
 
