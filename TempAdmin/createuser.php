@@ -1,6 +1,6 @@
 <?php
 
-include('header.php');
+include('../header.php');
 
 $email = $_POST['email'];
 $pass = $_POST['pass'];
