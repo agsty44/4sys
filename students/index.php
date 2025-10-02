@@ -26,6 +26,12 @@ $query = $conn->prepare($sql);
 $query->bind_param('i', $identifier);
 $query->execute();
 $grade_result = $query->get_result();
-$grade_record = $grade_result->fetch_assoc();
+
+$grade_list = [];                                                           // define an array which stores the grades
+
+while ($row = $grade_result->fetch_assoc()) {                                   // iteratively add each grade to the array, this can be iterated later.
+    $grade_list[] = $row;
+}
+
 $query->close();
 ?>
