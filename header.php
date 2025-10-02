@@ -20,19 +20,19 @@ function send_to_dashboard($level) {
     // switch case to forward users to the right access page
     switch ($level) {
         case 0:                                                                 // bus drivers
-            header('http://localhost/bus/');
+            header('Location: http://localhost/bus/');
             die();
         case 1:                                                                 // students
-            header('http://localhost/students/');  
+            header('Location: http://localhost/students/');  
             die();
         case 2:                                                                 // parents
-            header('http://localhost/parents/');  
+            header('Location: http://localhost/parents/');  
             die();
         case 3:                                                                 // teachers
-            header('http://localhost/teachers/');  
+            header('Location: http://localhost/teachers/');  
             die();
         case 4:                                                                 // admins
-            header('http://localhost/admin/');  
+            header('Location: http://localhost/admin/');  
             die();
         default:
             include('loginform.html');
