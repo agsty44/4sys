@@ -92,7 +92,7 @@ function grab_login_from_email_pass() {
     $identifier = $record['PersonID'];                                          // return identifier
 
     // mismatch
-    if (!password_verify($pass, $passHash)) {                   // password verification failed, get out of here
+    if (!password_verify($pass, $passHash)) {                                   // password verification failed, get out of here
         include('loginform.html');
         echo('Incorrect login');
         die();
@@ -102,8 +102,8 @@ function grab_login_from_email_pass() {
 
     //check for an access token in db, and generate one if needed.
     $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
-    $query = $conn->prepare($sql);                                       // prepare statement for execution
-    $query->bind_param('s', $email);                               // bind parameters
+    $query = $conn->prepare($sql);                                              // prepare statement for execution
+    $query->bind_param('s', $email);                                            // bind parameters
     $query->execute();                                                          // execute
     $returned_token = $query->get_result();                                     // get results
     $record = $returned_token->fetch_assoc();                                   // fetch record
@@ -117,13 +117,13 @@ function grab_login_from_email_pass() {
         // until that token returns no rows, generate a new one.
         while ($uniqueness_of_token != 0) {
             //upload new token
-            $token_number = random_int(0, 999999999999);              // generate a number up to 1 trillion
-            $token_hash = password_hash($token_number);               // convert it to a bcrypt hash
+            $token_number = random_int(0, 999999999999);                        // generate a number up to 1 trillion
+            $token_hash = password_hash($token_number);                         // convert it to a bcrypt hash
 
             //check for existence of token
             $sql = 'SELECT * FROM `People` WHERE `LoginToken` = ?';             // count the rows
-            $query = $conn->prepare($sql);                               // prepare
-            $query->bind_param('s', $token_hash);                  // bind parameters
+            $query = $conn->prepare($sql);                                      // prepare
+            $query->bind_param('s', $token_hash);                               // bind parameters
             $query->execute();                                                  // execute
             $token_integrity = $query->get_result();                            // get result
             $uniqueness_of_token = $token_integrity->num_rows;                  // check uniqueness
@@ -133,9 +133,8 @@ function grab_login_from_email_pass() {
 
         // insert the new token
         $sql = 'UPDATE `People` SET `LoginToken` = ? WHERE `PersonID` = ?';     // update the login token that matches the person id
-        $query = $conn->prepare($sql);                                   // prepare
-        $query->bind_param('si',
-        $token_hash, $identifier);                                 // bind parameters
+        $query = $conn->prepare($sql);                                          // prepare
+        $query->bind_param('si',$token_hash, $identifier);                      // bind parameters
         $query->execute();                                                      // execute
         $query->close();                                                        // close query
     }
