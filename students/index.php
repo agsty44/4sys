@@ -21,13 +21,13 @@ $user_data_record = $user_info->fetch_assoc();
 $query->close();
 
 // return the most recent 3 grades
-$sql = 'SELECT Classes.`ClassName`, Grades.`Percentage`, Grades.`Comment` 
-        FROM Classes 
-        INNER JOIN Grades ON Classes.`ClassID` = Grades.`ClassID` 
-        WHERE grades.`StudentID` = ? 
-        ORDER BY Grades.Timestamp DESC 
+$sql = 'SELECT c.`ClassName`, g.`Percentage`, g.`Comment` 
+        FROM `Classes` AS c
+        INNER JOIN `Grades` AS g ON c.`ClassID` = g.`ClassID` 
+        WHERE g.`StudentID` = ? 
+        ORDER BY g.Timestamp DESC 
         LIMIT 3';
-        
+
 $query = $conn->prepare($sql);
 $query->bind_param('i', $identifier);
 $query->execute();
