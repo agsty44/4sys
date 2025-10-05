@@ -48,7 +48,14 @@ function grab_login_from_cookie() {
     // this returns an access tier given an auth token, and also handles logic for invalid tokens.
     // if an invalid token is given, the user will be sent to login.
 
-    $token = $_COOKIE['auth_token'];                                            // extract into a variable for cleaner code
+    $token = $_COOKIE['auth_token'] ?? null;                                    // extract into a variable for cleaner code. if the cookie doesn't exist return null to handle with isset()
+
+    if ($token == null) {                                                       // die if no token
+        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');
+        die();
+    }
+
+
     $sql = 'SELECT `AccessTier` FROM `People` WHERE `LoginToken` = ?';          // this is the layout of our SQL statement to return a userID.
     $query = $conn->prepare($sql);                                              // prepare statement for execution
     $query->bind_param('s', $token);                                            // bind parameters
@@ -79,7 +86,13 @@ function grab_user_id() {
     // this doesn't need to be verified as the function is only every called after
     // the usage of grab_login_from_cookie(), so valid auth_token is already handled.
 
-    $token = $_COOKIE['auth_token'];                                            // fetch login token
+    $token = $_COOKIE['auth_token'] ?? null;                                    // fetch login token or NULL if no token
+
+    if ($token == null) {                                                       // die if token non existent
+        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');
+        die();
+    }
+
     $sql = 'SELECT `PersonID` FROM `People` WHERE `LoginToken` = ?';            // sql to fetch a users identifier
     $query = $conn->prepare($sql);
     $query->bind_param('s', $token);
