@@ -1,6 +1,6 @@
 <?php
 // import header lib. this establishes db connections
-include($_SERVER['DOCUMENT_ROOT'] . 'header.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/header.php');
 
 is_user_in_right_area(1);                                                       // pass the access tier of this page into the parameters.
 $identifier = grab_user_id();

@@ -58,7 +58,7 @@ function grab_login_from_cookie() {
     // handle if the cookie is bad
     if ($returned_id->num_rows == 0) {
         setcookie('auth_token', '', time() - 1);                                // delete the cookie, its bad.
-        include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');                                              // send them home
+        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');                 // send them home
         die();
     }
 
