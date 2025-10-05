@@ -22,19 +22,19 @@ function send_to_dashboard($level) {
     // switch case to forward users to the right access page
     switch ($level) {
         case 0:                                                                 // bus drivers
-            header('Location: http://localhost:8080/bus/index.php');
+            header('Location: http://4sys.local:8080/bus/index.php');
             die();
         case 1:                                                                 // students
-            header('Location: http://localhost:8080/students/index.php');  
+            header('Location: http://4sys.local:8080/students/index.php');  
             die();
         case 2:                                                                 // parents
-            header('Location: http://localhost:8080/parents/index.php');  
+            header('Location: http://4sys.local:8080/parents/index.php');  
             die();
         case 3:                                                                 // teachers
-            header('Location: http://localhost:8080/teachers/index.php');  
+            header('Location: http://4sys.local:8080/teachers/index.php');  
             die();
         case 4:                                                                 // admins
-            header('Location: http://localhost:8080/admin/index.php');  
+            header('Location: http://4sys.local:8080/admin/index.php');  
             die();
         default:
             include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');
