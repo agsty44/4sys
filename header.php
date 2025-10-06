@@ -37,7 +37,7 @@ function send_to_dashboard($level) {
             header('Location: http://4sys.local:8080/admin/index.php');  
             die();
         default:
-            include($_SERVER['DOCUMENT_ROOT'] . 'loginform.html');
+            include($_SERVER['DOCUMENT_ROOT'] . 'login_form.html');
             die();
     }
 }
@@ -51,7 +51,7 @@ function grab_login_from_cookie() {
     $token = $_COOKIE['auth_token'] ?? null;                                    // extract into a variable for cleaner code. if the cookie doesn't exist return null to handle with isset()
 
     if ($token == null) {                                                       // die if no token
-        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');
+        include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
         die();
     }
 
@@ -65,7 +65,7 @@ function grab_login_from_cookie() {
     // handle if the cookie is bad
     if ($returned_id->num_rows == 0) {
         setcookie('auth_token', '', time() - 1);                                // delete the cookie, its bad.
-        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');                 // send them home
+        include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');                 // send them home
         die();
     }
 
@@ -89,7 +89,7 @@ function grab_user_id() {
     $token = $_COOKIE['auth_token'] ?? null;                                    // fetch login token or NULL if no token
 
     if ($token == null) {                                                       // die if token non existent
-        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');
+        include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
         die();
     }
 

@@ -24,7 +24,7 @@ else if (isset($_POST['email']) && isset($_POST['pass'])) {
     die();
 }
 else {
-    include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');
+    include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
     die();
 }
 
@@ -44,7 +44,7 @@ function grab_login_from_email_pass() {
 
     // if no hash present
     if ($returned_hash->num_rows == 0) {                                        // no account with that email, get out of here
-        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');
+        include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
         echo('Incorrect login');
         die();
     }
@@ -57,7 +57,7 @@ function grab_login_from_email_pass() {
 
     // mismatch
     if (!password_verify($pass, $pass_hash)) {                                   // password verification failed, get out of here
-        include($_SERVER['DOCUMENT_ROOT'] . '/loginform.html');
+        include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
         echo('Incorrect login');
         die();
     }
