@@ -11,5 +11,6 @@ $identifier = grab_user_id();
 // it will also display their general timetable, and specifically their next upcoming lesson.
 // the above code is likely to be used in most instances of index.php for account verification.
 
-
+include('./student_home_page.html');
+die();
 ?>
