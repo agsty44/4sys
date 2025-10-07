@@ -1,6 +1,6 @@
 <?php
 
-include($_SERVER['DOCUMENT_ROOT'] . 'header.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/header.php');
 
 $email = $_POST['email'];
 $pass = $_POST['pass'];
