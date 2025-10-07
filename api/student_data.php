@@ -36,15 +36,6 @@ while ($row = $grade_result->fetch_assoc()) {                                   
 $query->close();
 
 // return json data
-
-// DEBUGGING
-header('Content-Type: text/plain');
-var_dump($identifier, $user_data_record, $grade_list);
-exit;
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 header('Content-Type: application/json');                                       // set header to be json
 echo(json_encode([                                                              // echo as json
     'student_info' => $user_data_record,
