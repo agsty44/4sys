@@ -56,7 +56,9 @@ function grab_login_from_cookie() {
     }
 
 
-    $sql = 'SELECT `AccessTier` FROM `People` WHERE `LoginToken` = ?';          // this is the layout of our SQL statement to return a userID.
+    $sql = 'SELECT `AccessTier`
+            FROM `People` 
+            WHERE `LoginToken` = ?';                                            // this is the layout of our SQL statement to return a userID.
     $query = $conn->prepare($sql);                                              // prepare statement for execution
     $query->bind_param('s', $token);                                            // bind parameters
     $query->execute();                                                          // execute
@@ -65,7 +67,7 @@ function grab_login_from_cookie() {
     // handle if the cookie is bad
     if ($returned_id->num_rows == 0) {
         setcookie('auth_token', '', time() - 1);                                // delete the cookie, its bad.
-        include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');                 // send them home
+        include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');                // send them home
         die();
     }
 
@@ -93,7 +95,9 @@ function grab_user_id() {
         die();
     }
 
-    $sql = 'SELECT `PersonID` FROM `People` WHERE `LoginToken` = ?';            // sql to fetch a users identifier
+    $sql = 'SELECT `PersonID` 
+            FROM `People` 
+            WHERE `LoginToken` = ?';                                            // sql to fetch a users identifier
     $query = $conn->prepare($sql);
     $query->bind_param('s', $token);
     $query->execute();
@@ -105,9 +109,9 @@ function grab_user_id() {
 }
 
 function is_user_in_right_area($intended_access_level) {
-    $user_access_level = grab_login_from_cookie();                                  // not only check that the login is right, but grab the access level to check this is the right location.
+    $user_access_level = grab_login_from_cookie();                              // not only check that the login is right, but grab the access level to check this is the right location.
 
-    if ($user_access_level != $intended_access_level) {                             // if the access level is incorrect, we should send them to the right one.
+    if ($user_access_level != $intended_access_level) {                         // if the access level is incorrect, we should send them to the right one.
         send_to_dashboard($user_access_level);
     }
 }

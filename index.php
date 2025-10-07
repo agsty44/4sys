@@ -35,8 +35,9 @@ function grab_login_from_email_pass() {
     $pass = $_POST['pass'];
     
     // first we need the users password (if it exists)
-    $sql = 'SELECT `PersonID`, `AccessTier`, `PassHash` ' .
-           'FROM `People` WHERE `Email` = ?';                                   // SQL layout
+    $sql = 'SELECT `PersonID`, `AccessTier`, `PassHash`
+            FROM `People` 
+            WHERE `Email` = ?';                                                 // SQL layout
     $query = $conn->prepare($sql);                                              // prepare statement for execution
     $query->bind_param('s', $email);                                            // bind parameters
     $query->execute();                                                          // execute
@@ -51,8 +52,8 @@ function grab_login_from_email_pass() {
 
     // now do comparison
     $record = $returned_hash->fetch_assoc();                                    // fetch record
-    $pass_hash = $record['PassHash'];                                            // return passhash for verification
-    $access_tier = $record['AccessTier'];                                        // return access tier for sorting
+    $pass_hash = $record['PassHash'];                                           // return passhash for verification
+    $access_tier = $record['AccessTier'];                                       // return access tier for sorting
     $identifier = $record['PersonID'];                                          // return identifier
 
     // mismatch
@@ -65,7 +66,9 @@ function grab_login_from_email_pass() {
     $query->close();
 
     //check for an access token in db, and generate one if needed.
-    $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
+    $sql = 'SELECT `LoginToken` 
+            FROM `People` 
+            WHERE `PersonID` = ?';                                              // retrieve the login token from the db
     $query = $conn->prepare($sql);                                              // prepare statement for execution
     $query->bind_param('i', $identifier);                                       // bind parameters
     $query->execute();                                                          // execute
@@ -98,16 +101,20 @@ function grab_login_from_email_pass() {
         $query->close();                                                        // close query
 
         // insert the new token
-        $sql = 'UPDATE `People` SET `LoginToken` = ? WHERE `PersonID` = ?';     // update the login token that matches the person id
+        $sql = 'UPDATE `People` 
+                SET `LoginToken` = ? 
+                WHERE `PersonID` = ?';                                          // update the login token that matches the person id
         $query = $conn->prepare($sql);                                          // prepare
         $query->bind_param('si',$token_hash, $identifier);                      // bind parameters
         $query->execute();                                                      // execute
         $query->close();                                                        // close query
     }
 
-    $sql = 'SELECT `LoginToken` FROM `People` WHERE `PersonID` = ?';            // retrieve the login token from the db
+    $sql = 'SELECT `LoginToken`
+            FROM `People` 
+            WHERE `PersonID` = ?';                                              // retrieve the login token from the db
     $query = $conn->prepare($sql);                                              // prepare statement for execution
-    $query->bind_param('i', $identifier);                                            // bind parameters
+    $query->bind_param('i', $identifier);                                       // bind parameters
     $query->execute();                                                          // execute
     $returned_token = $query->get_result();                                     // get results
     $record = $returned_token->fetch_assoc();                                   // fetch record

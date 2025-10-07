@@ -6,7 +6,9 @@ is_user_in_right_area(1);                                                       
 $identifier = grab_user_id();
 
 // return info on the user
-$sql = 'SELECT `OtherNames`, `LastName`, `YearGroup` FROM `People` WHERE `PersonID` = ?';
+$sql = 'SELECT `OtherNames`, `LastName`, `YearGroup`
+        FROM `People`
+        WHERE `PersonID` = ?';
 $query = $conn->prepare($sql);
 $query->bind_param('i', $identifier);
 $query->execute();
