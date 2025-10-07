@@ -1,4 +1,7 @@
 <?php
+// API PAGE WHICH RETURNS DATA ON A GIVEN USER.
+// TODO - POST IMPLEMENTATION FOR PLUGIN PURPOSES?
+
 // import header lib. this establishes db connections
 include($_SERVER['DOCUMENT_ROOT'] . '/header.php');
 
@@ -19,7 +22,8 @@ $query->close();
 // return the most recent 3 grades, joining the name of the class based on the class ID used to identify the grade
 $sql = 'SELECT c.`ClassName`, g.`Percentage`, g.`Comment` 
         FROM `Classes` AS c
-        INNER JOIN `Grades` AS g ON c.`ClassID` = g.`ClassID` 
+        INNER JOIN `Grades` AS g 
+        ON c.`ClassID` = g.`ClassID` 
         WHERE g.`StudentID` = ? 
         ORDER BY g.Timestamp DESC 
         LIMIT 3';
@@ -37,11 +41,26 @@ while ($row = $grade_result->fetch_assoc()) {                                   
 
 $query->close();
 
+// return the students bus name
+$sql = 'SELECT b.`RouteName`
+        FROM `Buses` AS b
+        INNER JOIN `People` AS p 
+        ON b.`BusID` = p.`BusID`
+        WHERE p.`PersonID` = ?';
+
+$query = $conn->prepare($sql);
+$query->bind_param('i', $identifier);
+$query->execute();
+$bus_result = $query->get_result();
+$bus_name = $bus_result->fetch_assoc()['RouteName'];                            // this MIGHT look like messy syntax, but it just retrieves the route name from the record
+
+
 // return json data
 header('Content-Type: application/json');                                       // set header to be json
 echo(json_encode([                                                              // echo as json
     'student_info' => $user_data_record,
-    'grade_list' => $grade_list
+    'grade_list' => $grade_list,
+    'bus_name' => $bus_name
 ]))                             
 
 ?>
