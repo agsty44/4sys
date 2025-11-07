@@ -1,6 +1,8 @@
 <?php
 // API PAGE WHICH RETURNS DATA ON A GIVEN USER.
 // TODO - POST IMPLEMENTATION FOR PLUGIN PURPOSES?
+// ALTerNATIVE - REWRITE THIS FOR ADMIN ACCESS - is_user_in_right_area() now goes with parameter 4
+// and identifier is taken from POST/GET. - call this student_data_all.php perhaps?
 
 // import header lib. this establishes db connections
 include($_SERVER['DOCUMENT_ROOT'] . '/header.php');
@@ -54,13 +56,24 @@ $query->execute();
 $bus_result = $query->get_result();
 $bus_name = $bus_result->fetch_assoc()['RouteName'];                            // this MIGHT look like messy syntax, but it just retrieves the route name from the record
 
+// collect timetable data
+$sql = 'SELECT *
+        FROM `Timetables`
+        WHERE `StudentID` = ?';
+
+$query = $conn->prepare($sql);
+$query->bind_param('i', $identifier);
+$query->execute();
+$bus_result = $query->get_result();
+$timetable = $bus_result->fetch_assoc();
 
 // return json data
 header('Content-Type: application/json');                                       // set header to be json
 echo(json_encode([                                                              // echo as json
     'student_info' => $user_data_record,
     'grade_list' => $grade_list,
-    'bus_name' => $bus_name
+    'bus_name' => $bus_name,
+    'timetable' => $timetable
 ]))                             
 
 ?>
