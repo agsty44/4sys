@@ -95,5 +95,5 @@ fetch('http://4sys.local:8080/api/student_data.php')
     })
     .catch(error => {
         console.error(error);
-        alert('Failed to load timetable - contact admins.');
+        // this error message is too general! alert('Failed to load timetable - contact admins.');
     });

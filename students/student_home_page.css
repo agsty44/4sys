@@ -20,3 +20,26 @@
 #timetable td:not(:empty):not(:contains("N/A")) {
     background: #e0f7fa; /* highlight real lessons */
 }
+
+#grades {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    table-layout: fixed; /* ensures column widths are respected */
+}
+
+#grades th, #grades td {
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    text-align: left;
+    width: 25%; /* 4 columns = 1/4 each */
+}
+
+#grades th {
+    background: #333;
+    color: #fff;
+}
+
+#grades td:not(:empty):not(:contains("N/A")) {
+    background: #e0f7fa; /* highlight cells with actual grades */
+}
