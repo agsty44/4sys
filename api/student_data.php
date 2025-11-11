@@ -22,7 +22,7 @@ $user_data_record = $user_info->fetch_assoc();
 $query->close();
 
 // return the most recent 3 grades, joining the name of the class based on the class ID used to identify the grade
-$sql = 'SELECT c.`ClassName`, g.`Percentage`, g.`Comment` 
+$sql = 'SELECT c.`ClassName`, g.`Percentage`, g.`Comment`, g.`Timestamp`
         FROM `Classes` AS c
         INNER JOIN `Grades` AS g 
         ON c.`ClassID` = g.`ClassID` 
