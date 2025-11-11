@@ -75,7 +75,7 @@ while ($row = $timetable_result->fetch_assoc()) {
         // extract data from the row
         $day = $row['DayID'];
         $period = $row['SessionID'];
-        $class = $row['ClassID'];
+        $class = $row['ClassName'];
 
         // if there isnt an array for the day, create
         if (!isset($timetable[$day])) {
