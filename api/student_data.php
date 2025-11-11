@@ -58,7 +58,7 @@ $bus_name = $bus_result->fetch_assoc()['RouteName'];                            
 
 // collect timetable data
 $sql = 'SELECT *
-        FROM `Timetables`
+        FROM `Timetable`
         WHERE `StudentID` = ?';
 
 $query = $conn->prepare($sql);
