@@ -1,0 +1,22 @@
+#timetable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    table-layout: fixed; /* respect column widths */
+}
+
+#timetable th, #timetable td {
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    text-align: left;
+    width: 16.6667%; /* 1/6 of table width */
+}
+
+#timetable th {
+    background: #333;
+    color: #fff;
+}
+
+#timetable td:not(:empty):not(:contains("N/A")) {
+    background: #e0f7fa; /* highlight real lessons */
+}
