@@ -57,15 +57,41 @@ $bus_result = $query->get_result();
 $bus_name = $bus_result->fetch_assoc()['RouteName'];                            // this MIGHT look like messy syntax, but it just retrieves the route name from the record
 
 // collect timetable data
-$sql = 'SELECT *
-        FROM `Timetable`
-        WHERE `StudentID` = ?';
+$sql = 'SELECT t.`DayID`, t.`SessionID`, c.`ClassName`
+        FROM `Timetable` AS t
+        INNER JOIN `Classes` AS c
+        ON t.`ClassID` = c.`ClassID`
+        WHERE t.`StudentID` = ?
+        ORDER BY t.`DayID`, t.`SessionID`';
 
 $query = $conn->prepare($sql);
 $query->bind_param('i', $identifier);
 $query->execute();
-$bus_result = $query->get_result();
-$timetable = $bus_result->fetch_assoc();
+$timetable_result = $query->get_result();
+
+$timetable = [];
+
+while ($row = $timetable_result->fetch_assoc()) {
+        // extract data from the row
+        $day = $row['DayID'];
+        $period = $row['SessionID'];
+        $class = $row['ClassID'];
+
+        // if there isnt an array for the day, create
+        if (!isset($timetable[$day])) {
+                $timetable[$day] = [];
+        }
+
+        // if there isnt an array for the day->session, create
+        if (!isset($timetable[$day][$period])) {
+                $timetable[$day][$period] = [];
+        } else {
+                $timetable['warnings'][] = 'WARNING: DUPLICATE ON: DAY ' . $day . 'AND PERIOD ' . $session;
+        }
+
+        // append to the array, use this for handling if multiple classes exist
+        $timetable[$day][$period][] = $class;
+}
 
 // return json data
 header('Content-Type: application/json');                                       // set header to be json
