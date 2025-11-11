@@ -13,7 +13,7 @@ fetch('http://4sys.local:8080/api/student_data.php')
         document.getElementById('greet-user').textContent = `Welcome back, ${student_info.OtherNames} ${student_info.LastName}.`;
         document.getElementById('greet-subheading').textContent = `Year group: ${student_info.YearGroup}`;
 
-        const tablebody = document.querySelector('#timetable tbody');
+        const timetableBody = document.querySelector('#timetable tbody');
 
         // array to store session names
         const seshNames = {
@@ -66,8 +66,32 @@ fetch('http://4sys.local:8080/api/student_data.php')
             }
 
             // finally commit the row
-            tablebody.appendChild(sessionsRow);
+            timetableBody.appendChild(sessionsRow);
         }
+
+        const gradeBody = document.querySelector('#grades tbody');
+
+        for (let enumerator = 0; enumerator <= 2; enumerator++) {
+            const gradeRow = document.createElement('tr');
+
+            const classTD = document.createElement('td');
+            const percentTD = document.createElement('td');
+            const commentTD = document.createElement('td');
+            const timestampTD = document.createElement('td');
+
+            classTD.textContent = grades[enumerator].ClassName;
+            percentTD.textContent = grades[enumerator].Percentage;
+            commentTD.textContent = grades[enumerator].Comment;
+            timestampTD.textContent = grades[enumerator].TimestampTD;
+
+            gradeRow.appendChild(classTD);
+            gradeRow.appendChild(percentTD);
+            gradeRow.appendChild(commentTD);
+            gradeRow.appendChild(timestampTD);
+
+            gradeBody.appendChild(gradeRow);
+        }
+
     })
     .catch(error => {
         console.error(error);
