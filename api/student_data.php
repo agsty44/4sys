@@ -57,10 +57,12 @@ $bus_result = $query->get_result();
 $bus_name = $bus_result->fetch_assoc()['RouteName'];                            // this MIGHT look like messy syntax, but it just retrieves the route name from the record
 
 // collect timetable data
-$sql = 'SELECT t.`DayID`, t.`SessionID`, c.`ClassName`
+$sql = 'SELECT t.`DayID`, t.`SessionID`, c.`ClassName`, c.`YearGroup`, c.`Room`, p.`OtherNames`, p.`LastName`
         FROM `Timetable` AS t
         INNER JOIN `Classes` AS c
         ON t.`ClassID` = c.`ClassID`
+        INNER JOIN `People` AS p
+        ON p.`PersonID` = c.`TeacherID`
         WHERE t.`StudentID` = ?
         ORDER BY t.`DayID`, t.`SessionID`';
 
@@ -76,6 +78,9 @@ while ($row = $timetable_result->fetch_assoc()) {
         $day = $row['DayID'];
         $period = $row['SessionID'];
         $class = $row['ClassName'];
+        $year = $row['YearGroup'];
+        $room = $row['Room'];
+        $name = $row['OtherNames'] . ' ' . $row['LastName'];
 
         // if there isnt an array for the day, create
         if (!isset($timetable[$day])) {
@@ -90,7 +95,7 @@ while ($row = $timetable_result->fetch_assoc()) {
         }
 
         // append to the array, use this for handling if multiple classes exist
-        $timetable[$day][$period][] = $class;
+        $timetable[$day][$period][] = $class . ', '. $year . ', '. $room . ', '. $name;
 }
 
 // return json data
