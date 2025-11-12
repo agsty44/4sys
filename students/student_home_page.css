@@ -1,4 +1,4 @@
-.table-container {
+#table-container {
     display: flex;
     justify-content: space-between; /* space between tables */
     gap: 20px; /* optional: space between tables */
