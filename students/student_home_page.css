@@ -1,45 +1,33 @@
-#timetable {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: sans-serif;
-    table-layout: fixed; /* respect column widths */
+.table-container {
+    display: flex;
+    justify-content: space-between; /* space between tables */
+    gap: 20px; /* optional: space between tables */
+    align-items: flex-start; /* align tops */
 }
 
-#timetable th, #timetable td {
+#timetable, #grades {
+    width: 48%; /* fit nicely side by side */
+    border-collapse: collapse;
+    font-family: sans-serif;
+    table-layout: fixed;
+}
+
+/* Common table cell styling */
+#timetable th, #timetable td,
+#grades th, #grades td {
     border: 1px solid #ccc;
     padding: 6px 8px;
     text-align: left;
-    width: 16.6667%; /* 1/6 of table width */
 }
 
+/* Timetable header */
 #timetable th {
     background: #333;
     color: #fff;
 }
 
-#timetable td:not(:empty):not(:contains("N/A")) {
-    background: #e0f7fa; /* highlight real lessons */
-}
-
-#grades {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: sans-serif;
-    table-layout: fixed; /* ensures column widths are respected */
-}
-
-#grades th, #grades td {
-    border: 1px solid #ccc;
-    padding: 6px 8px;
-    text-align: left;
-    width: 25%; /* 4 columns = 1/4 each */
-}
-
+/* Grades header */
 #grades th {
     background: #333;
     color: #fff;
-}
-
-#grades td:not(:empty):not(:contains("N/A")) {
-    background: #e0f7fa; /* highlight cells with actual grades */
 }
