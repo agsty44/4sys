@@ -72,6 +72,7 @@ $query->execute();
 $timetable_result = $query->get_result();
 
 $timetable = [];
+$timetable['warnings'] = [];
 
 while ($row = $timetable_result->fetch_assoc()) {
         // extract data from the row
