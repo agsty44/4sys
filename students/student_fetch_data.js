@@ -63,8 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const bus = data.bus_name;
             const timetable = data.timetable;
 
+            const now = new Date();
+            const day = now.getDay();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const sumMinutes = hours * 60 + minutes;                                // converts time format into minutes.
+            const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayWord = weekdays[day];
+
             // insert data
-            document.getElementById('greet-user').textContent = `Welcome back, ${student_info.OtherNames} ${student_info.LastName}.`;
+            document.getElementById('greet-user').textContent = `Welcome back, ${student_info.OtherNames} ${student_info.LastName}. It is currently ${hours}:${minutes} on a ${dayWord}. Have a great day.`;
             document.getElementById('greet-subheading').textContent = `Year group: ${student_info.YearGroup}`;
 
             const timetableBody = document.querySelector('#timetable tbody');
@@ -154,11 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // upcoming lesson calculations
-            const now = new Date();
-            const day = now.getDay();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const sumMinutes = hours * 60 + minutes;                                // converts time format into minutes.
 
             const [dayIndex, sessionIndex] = selectNextPeriod(day, sumMinutes);     // retrieve index of next lesson using our function we wrote
 
