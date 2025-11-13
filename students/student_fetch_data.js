@@ -173,7 +173,7 @@ fetch('http://4sys.local:8080/api/student_data.php')
             nextSessionString = 'N/A - contact admin';
         }
 
-        document.getElementById('next-lesson').textContent = `Your next lesson is: ${nextSessionString}`
+        document.getElementById('next-lesson').textContent = `Your next lesson is: ${nextSessionString}`;
     })
     .catch(error => {
         console.error(error);
