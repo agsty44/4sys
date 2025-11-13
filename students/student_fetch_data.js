@@ -146,6 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     gradeRow.appendChild(timestampTD);
 
                     gradeBody.appendChild(gradeRow);
+                } catch {
+
                 } finally {
                     // empty to discard errors.
                 }
