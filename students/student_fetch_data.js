@@ -127,24 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // log the 3 most recent grades into the table
             for (let enumerator = 0; enumerator <= 2; enumerator++) {
-                const gradeRow = document.createElement('tr');
+                try {
+                    const gradeRow = document.createElement('tr');
 
-                const classTD = document.createElement('td');
-                const percentTD = document.createElement('td');
-                const commentTD = document.createElement('td');
-                const timestampTD = document.createElement('td');
+                    const classTD = document.createElement('td');
+                    const percentTD = document.createElement('td');
+                    const commentTD = document.createElement('td');
+                    const timestampTD = document.createElement('td');
 
-                classTD.textContent = grades[enumerator].ClassName;
-                percentTD.textContent = grades[enumerator].Percentage;
-                commentTD.textContent = grades[enumerator].Comment;
-                timestampTD.textContent = grades[enumerator].TimestampTD;
+                    classTD.textContent = grades[enumerator].ClassName;
+                    percentTD.textContent = grades[enumerator].Percentage;
+                    commentTD.textContent = grades[enumerator].Comment;
+                    timestampTD.textContent = grades[enumerator].TimestampTD;
 
-                gradeRow.appendChild(classTD);
-                gradeRow.appendChild(percentTD);
-                gradeRow.appendChild(commentTD);
-                gradeRow.appendChild(timestampTD);
+                    gradeRow.appendChild(classTD);
+                    gradeRow.appendChild(percentTD);
+                    gradeRow.appendChild(commentTD);
+                    gradeRow.appendChild(timestampTD);
 
-                gradeBody.appendChild(gradeRow);
+                    gradeBody.appendChild(gradeRow);
+                } finally {
+                    // empty to discard errors.
+                }
             }
 
             // upcoming lesson calculations
