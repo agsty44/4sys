@@ -1,3 +1,7 @@
+h1 {
+    display: inline; /* or inline-block */
+}
+
 #table-container {
     display: flex;
     justify-content: space-between; /* space between tables */
