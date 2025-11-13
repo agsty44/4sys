@@ -1,3 +1,56 @@
+function selectNextPeriod(currDay, currTime) {
+    /* lookup table 
+        0845 -> 525 (1)
+        0900 -> 540 (2)
+        0955 -> 595 (3)
+        1050 -> 650 (4)
+        1110 -> 670 (5)
+        1205 -> 725 (6)
+        1300 -> 780 (7)
+        1355 -> 835 (8)
+        1450 -> 890 (9)
+        1545 -> 945 (10)
+        1645 -> 1005 (11) (this needs to refer to the next day - handle it as an edge case)
+
+        0 - sun
+        1 - mon
+        2 - tue
+        3 - wed
+        4 - thu
+        5 - fri
+        6 - sat
+    */
+
+    // handle weekends - early return
+    if (currDay === 0 || currDay === 6) return [1, 1];                          // day 1 (monday) period 1 (reg)
+
+    let nextSesh;
+
+    // if else tower begins here...
+    if (currTime < 525) nextSesh = 1;                                           // before 08:45
+    else if (currTime < 540) nextSesh = 2;                                      // before 09:00
+    else if (currTime < 595) nextSesh = 3;                                      // before 09:55
+    else if (currTime < 650) nextSesh = 4;                                      // before 10:50
+    else if (currTime < 670) nextSesh = 5;                                      // before 11:10
+    else if (currTime < 725) nextSesh = 6;                                      // before 12:05
+    else if (currTime < 780) nextSesh = 7;                                      // before 13:00
+    else if (currTime < 835) nextSesh = 8;                                      // before 13:55
+    else if (currTime < 890) nextSesh = 9;                                      // before 14:50
+    else if (currTime < 945) nextSesh = 10;                                     // before 15:45
+    else nextSesh = 11;                                                         // no more today.
+
+    // edge case - end of day / nextSesh === 11:
+    if (nextSesh === 11) {
+        currDay += 1;
+        nextSesh = 1;
+    }                       
+
+    // final edge case - friday evening (currDay becomes 6...)
+    if (currDay === 6) return [1, 1];                                           // day 1 period 1, because its friday (weekend)
+
+    return [currDay, nextSesh];
+}
+
 fetch('http://4sys.local:8080/api/student_data.php')
     .then(response => {
         if (!response.ok) throw new Error('Api failure');
@@ -71,6 +124,7 @@ fetch('http://4sys.local:8080/api/student_data.php')
 
         const gradeBody = document.querySelector('#grades tbody');
 
+        // log the 3 most recent grades into the table
         for (let enumerator = 0; enumerator <= 2; enumerator++) {
             const gradeRow = document.createElement('tr');
 
@@ -92,6 +146,34 @@ fetch('http://4sys.local:8080/api/student_data.php')
             gradeBody.appendChild(gradeRow);
         }
 
+        // upcoming lesson calculations
+        const now = new Date();
+        const day = now.getDay();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const sumMinutes = hours * 60 + minutes;                                // converts time format into minutes.
+
+        const [dayIndex, sessionIndex] = selectNextPeriod(day, sumMinutes);     // retrieve index of next lesson using our function we wrote
+
+        let nextSessionString;
+
+        // if the next lesson exists:
+        if (timetable[dayIndex] && timetable[dayIndex][sessionIndex]) {
+            // check if there is a clash:
+            if (Array.isArray(timetable[dayIndex][sessionIndex])) {
+                nextSessionString = timetable[dayIndex][sessionIndex].join(', ');
+            } 
+            // no clash
+            else {
+                nextSessionString = timetable[dayIndex][sessionIndex];
+            }
+        } 
+        // if doesnt exist:
+        else { 
+            nextSessionString = 'N/A - contact admin';
+        }
+
+        document.getElementById('next-lesson').textContent = `Your next lesson is: ${nextSessionString}`
     })
     .catch(error => {
         console.error(error);

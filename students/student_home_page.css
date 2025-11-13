@@ -31,3 +31,15 @@
     background: #333;
     color: #fff;
 }
+
+#right-column {
+    display: flex;
+    flex-direction: column; /* stack table and next lesson */
+    width: 48%;
+}
+#next-lesson {
+    margin-top: 10px;
+    border: 1px dashed #ccc;
+    padding: 6px;
+    min-height: 50px; /* reserve space */
+}
