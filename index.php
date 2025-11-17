@@ -122,7 +122,7 @@ function grab_login_from_username_pass() {
     $query->close();                                                            // close query
 
     // finally we can set the cookie of the auth token.
-    setcookie('auth_token', $access_token, time() + 86400 * 7);
+    setcookie('auth_token', $access_token, time() + 86400 * 7, '/');
 
     return $access_tier;
 }
