@@ -18,8 +18,8 @@ if (isset($_COOKIE['auth_token'])) {
     send_to_dashboard($access_param);
     die();
 }
-else if (isset($_POST['email']) && isset($_POST['pass'])) {
-    $access_param = grab_login_from_email_pass();
+else if (isset($_POST['username']) && isset($_POST['pass'])) {
+    $access_param = grab_login_from_username_pass();
     send_to_dashboard($access_param);
     die();
 }
@@ -28,23 +28,23 @@ else {
     die();
 }
 
-function grab_login_from_email_pass() {
+function grab_login_from_username_pass() {
     global $conn;
 
-    $email = $_POST['email'];                                                   // extract POST data
+    $username = $_POST['username'];                                                   // extract POST data
     $pass = $_POST['pass'];
     
     // first we need the users password (if it exists)
     $sql = 'SELECT `PersonID`, `AccessTier`, `PassHash`
             FROM `People` 
-            WHERE `Email` = ?';                                                 // SQL layout
+            WHERE `Username` = ?';                                                 // SQL layout
     $query = $conn->prepare($sql);                                              // prepare statement for execution
-    $query->bind_param('s', $email);                                            // bind parameters
+    $query->bind_param('s', $username);                                            // bind parameters
     $query->execute();                                                          // execute
     $returned_hash = $query->get_result();                                      // get results
 
     // if no hash present
-    if ($returned_hash->num_rows == 0) {                                        // no account with that email, get out of here
+    if ($returned_hash->num_rows == 0) {                                        // no account with that username, get out of here
         include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
         echo('Incorrect login');
         die();
