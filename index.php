@@ -31,15 +31,15 @@ else {
 function grab_login_from_username_pass() {
     global $conn;
 
-    $username = $_POST['username'];                                                   // extract POST data
+    $username = $_POST['username'];                                             // extract POST data
     $pass = $_POST['pass'];
     
     // first we need the users password (if it exists)
     $sql = 'SELECT `PersonID`, `AccessTier`, `PassHash`
             FROM `People` 
-            WHERE `Username` = ?';                                                 // SQL layout
+            WHERE `Username` = ?';                                              // SQL layout
     $query = $conn->prepare($sql);                                              // prepare statement for execution
-    $query->bind_param('s', $username);                                            // bind parameters
+    $query->bind_param('s', $username);                                         // bind parameters
     $query->execute();                                                          // execute
     $returned_hash = $query->get_result();                                      // get results
 
@@ -57,7 +57,7 @@ function grab_login_from_username_pass() {
     $identifier = $record['PersonID'];                                          // return identifier
 
     // mismatch
-    if (!password_verify($pass, $pass_hash)) {                                   // password verification failed, get out of here
+    if (!password_verify($pass, $pass_hash)) {                                  // password verification failed, get out of here
         include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
         echo('Incorrect login');
         die();
