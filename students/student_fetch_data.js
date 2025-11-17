@@ -79,16 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // array to store session names
             const seshNames = {
-                1: 'Registration, 08:45->09:00',
-                2: 'Period 1, 09:00->09:55',
-                3: 'Period 2, 09:55->10:50',
-                4: 'Break, 10:50->11:10',
-                5: 'Period 3, 11:10->12:05',
-                6: 'Period 4, 12:05->13:00',
-                7: 'Lunch, 13:00->13:55',
-                8: 'Period 5, 13:55->14:50',
-                9: 'Period 6, 14:50->15:45',
-                10: 'Enrichment, 15:45->16:45'
+                1: 'Registration, 08:45 -> 09:00',
+                2: 'Period 1, 09:00 -> 09:55',
+                3: 'Period 2, 09:55 -> 10:50',
+                4: 'Break, 10:50 -> 11:10',
+                5: 'Period 3, 11:10 -> 12:05',
+                6: 'Period 4, 12:05 -> 13:00',
+                7: 'Lunch, 13:00 -> 13:55',
+                8: 'Period 5, 13:55 -> 14:50',
+                9: 'Period 6, 14:50 -> 15:45',
+                10: 'Enrichment, 15:45 -> 16:45'
             }
 
             // for every period...
