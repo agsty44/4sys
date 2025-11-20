@@ -1,9 +1,10 @@
 function showResults(searchQuery) {
     const searchResults = document.getElementById("student-page-links");
 
+    searchResults.innerHTML = ""; //set blank to prevent dupes
+
     if (searchQuery == "") {
         //set blank as no query
-        searchResults.innerHTML = "";
         return;
     }
 
@@ -15,7 +16,7 @@ function showResults(searchQuery) {
         .then(data => {
 
             for (let student of data.students) {
-                let studentLink = `<a href="/admin/view_student/view_student.php?id=${student.PersonID}">${student.OtherNames} ${student.LastName} [${student.PersonID}]</a>`;
+                let studentLink = `<a href="/admin/view_student/view_student.php?id=${student.PersonID}">${student.OtherNames} ${student.LastName} [${student.PersonID}]</a><br>`;
                 searchResults.insertAdjacentHTML("beforeend", studentLink);
             }
         })
