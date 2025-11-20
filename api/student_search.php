@@ -11,7 +11,7 @@ $sql = 'SELECT `PersonID`, `OtherNames`, `LastName`
         FROM `People`
         WHERE (CONCAT(`OtherNames`, " ", `LastName`) LIKE ?
         OR CONCAT(`OtherNames`, `LastName`) LIKE ?)
-        AND `AccessLevel` = 1';
+        AND `AccessTier` = 1';
 
 // this query covers both names with a space and without, now we need to setup the parameter
 $sql_parameter = '%' . $search_query . '%';
