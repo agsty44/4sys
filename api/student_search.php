@@ -17,7 +17,7 @@ $sql = 'SELECT `PersonID`, `OtherNames`, `LastName`
 $sql_parameter = '%' . $search_query . '%';
 
 $query = $conn->prepare($sql);
-$query->bind_param('s', $sql_parameter);
+$query->bind_param('ss', $sql_parameter, $sql_parameter);
 $query->execute();
 $search_result = $query->get_result();
 
