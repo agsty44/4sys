@@ -14,8 +14,8 @@ function showResults(searchQuery) {
             })
         .then(data => {
 
-            for (let enumerator = 0; enumerator < data.length; enumerator++) {
-                let studentLink = `<a href="/admin/view_student/view_student.php?id=${data[enumerator].PersonID}">${data[enumerator].OtherNames} ${data[enumerator].LastName} [${data[enumerator].PersonID}]</a>`;
+            for (let student of data.students) {
+                let studentLink = `<a href="/admin/view_student/view_student.php?id=${student.PersonID}">${student.OtherNames} ${student.LastName} [${student.PersonID}]</a>`;
                 searchResults.insertAdjacentHTML("beforeend", studentLink);
             }
         })
