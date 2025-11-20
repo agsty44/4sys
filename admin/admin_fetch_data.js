@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('http://4sys.local:8080/api/admin_data.php')
+    fetch('/api/admin_data.php')
         .then(response => {
             if (!response.ok) throw new Error('Api failure');
             return response.json();
