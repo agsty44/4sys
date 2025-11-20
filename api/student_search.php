@@ -7,7 +7,7 @@ $identifier = grab_user_id();
 
 $search_query = $_GET['query'];
 
-$sql = 'SELECT `UserID`, `OtherNames`, `LastName`
+$sql = 'SELECT `PersonID`, `OtherNames`, `LastName`
         FROM `People`
         WHERE (CONCAT(`OtherNames`, " ", `LastName`) LIKE ?
         OR CONCAT(`OtherNames`, `LastName`) LIKE ?)
