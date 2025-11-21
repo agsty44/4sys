@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }                       
 
         // final edge case - friday evening (currDay becomes 6...)
-        if (currDay === 6) return [1, 1];                                           // day 1 period 1, because its friday (weekend)
+        if (currDay === 6) return [1, 1];                                       // day 1 period 1, because its friday (weekend)
 
         return [currDay, nextSesh];
     }
@@ -67,9 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const day = now.getDay();
             const hours = now.getHours();
             const minutes = now.getMinutes();
-            const sumMinutes = hours * 60 + minutes;                                // converts time format into minutes.
+            const sumMinutes = hours * 60 + minutes;                            // converts time format into minutes.
             const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const dayWord = weekdays[day];
+            const formatMinutes = minutes < 10 ? `0${minutes}` : minutes;       // force it to take proper formatting
 
             // insert data
             document.getElementById('greet-user').textContent = `Welcome back, ${student_info.OtherNames} ${student_info.LastName}. It is currently ${hours}:${minutes} on a ${dayWord}. Have a great day.`;
