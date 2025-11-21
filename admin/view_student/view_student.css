@@ -1,0 +1,60 @@
+/* ONLY NEEDED IF LOGIN BUTTON EXISTS - IT IS OMITTED HERE. h1 {
+    display: inline;
+} */
+
+#table-container {
+    display: flex;
+    justify-content: space-between; /* space between tables */
+    gap: 20px; /* optional: space between tables */
+    align-items: flex-start; /* align tops */
+}
+
+#timetable {
+    width: 48%; /* keep timetable fixed */
+    border-collapse: collapse;
+    font-family: sans-serif;
+    table-layout: fixed;
+}
+
+#right-column {
+    display: flex;
+    flex-direction: column; /* stack table and next lesson */
+    flex: 1; /* take all remaining width */
+    align-items: center; /* center child elements horizontally */
+}
+
+#grades {
+    width: 100%; /* take full width of right column */
+    border-collapse: collapse;
+    font-family: sans-serif;
+    table-layout: fixed;
+}
+
+#next-lesson {
+    margin-top: 10px;
+    padding: 6px;
+    min-height: 50px; /* reserve space */
+    border: none; /* remove border */
+    text-align: center; /* center text inside the element */
+    width: 100%; /* match width of grades table */
+}
+
+/* Common table cell styling */
+#timetable th, #timetable td,
+#grades th, #grades td {
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+/* Timetable header */
+#timetable th {
+    background: #333;
+    color: #fff;
+}
+
+/* Grades header */
+#grades th {
+    background: #333;
+    color: #fff;
+}
