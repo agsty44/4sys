@@ -11,22 +11,6 @@ if (!isset($_GET['id'])) {
 
 $identifier = $_GET['id'];
 
-// SELECT COUNT TO CHECK USER EXISTS - VERY NEEDED!!!
-$sql = 'SELECT COUNT(*)
-        FROM `People`
-        WHERE `PersonID` = ?
-        AND AccessTier = 1';
-$query = $conn->prepare($sql);
-$query->bind_param('i', $identifier);
-$query->execute();
-$query_result = $query->get_result();
-$user_real = $query_result->fetch_row()[0] == 1;                                // assert if this value is equal to one
-
-if (!$user_real) {
-    header('Location: /admin/student_search/student_search.php');
-    die();
-}
-
 // return info on the user
 $sql = 'SELECT `OtherNames`, `LastName`, `YearGroup`
         FROM `People`
