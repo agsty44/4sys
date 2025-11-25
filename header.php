@@ -37,7 +37,7 @@ function send_to_dashboard($level) {
             header('Location: /admin/index.php');  
             die();
         default:
-            include($_SERVER['DOCUMENT_ROOT'] . 'login_form.html');
+            include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
             die();
     }
 }
