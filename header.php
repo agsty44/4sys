@@ -6,11 +6,14 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 */
 
-// DB boilerplate...
+/* DB boilerplate...
 $server = 'localhost';
 $user = 'root';
 $pass = 'password';
 $db = '4sys_main';
+*/
+
+require_once(__DIR__ . '/../4sys_config/config.php');
 
 $conn = new mysqli($server, $user, $pass, $db);
 
