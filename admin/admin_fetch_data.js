@@ -20,3 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(error);
         })
 })
+
+function logout() {
+    fetch('/api/logout.php')
+        .then(response => {
+            if (!response.ok) throw new Error('Api failure');
+            return response.json();
+        })
+        .then(data => {
+            window.location.replace('/')
+        })
+}

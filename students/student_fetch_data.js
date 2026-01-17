@@ -191,3 +191,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // this error message is too general! alert('Failed to load timetable - contact admins.');
         });
 })
+
+function logout() {
+    fetch('/api/logout.php')
+        .then(response => {
+            if (!response.ok) throw new Error('Api failure');
+            return response.json();
+        })
+        .then(data => {
+            window.location.replace('/')
+        })
+}
