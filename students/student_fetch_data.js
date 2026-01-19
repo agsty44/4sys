@@ -70,10 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const sumMinutes = hours * 60 + minutes;                            // converts time format into minutes.
             const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const dayWord = weekdays[day];
+            const formatHours = hours < 10 ? `0${hours}` : hours;
             const formatMinutes = minutes < 10 ? `0${minutes}` : minutes;       // force it to take proper formatting
 
             // insert data
-            document.getElementById('greet-user').textContent = `Welcome back, ${student_info.OtherNames} ${student_info.LastName}. It is currently ${hours}:${minutes} on a ${dayWord}. Have a great day.`;
+            document.getElementById('greet-user').textContent = `Welcome back, ${student_info.OtherNames} ${student_info.LastName}. It is currently ${formatHours}:${formatMinutes} on a ${dayWord}. Have a great day.`;
             document.getElementById('greet-subheading').textContent = `Year group: ${student_info.YearGroup}`;
 
             const timetableBody = document.querySelector('#timetable tbody');

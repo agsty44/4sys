@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const minutes = now.getMinutes();
             const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const dayWord = weekdays[day];
+            const formatHours = hours < 10 ? `0${hours}` : hours;
             const formatMinutes = minutes < 10 ? `0${minutes}` : minutes;       // force it to take proper formatting
-            document.getElementById('greet-user').textContent = `Welcome back, ${adminInfo.OtherNames} ${adminInfo.LastName}. It is currently ${hours}:${minutes} on a ${dayWord}. Have a great day.`
+            document.getElementById('greet-user').textContent = `Welcome back, ${adminInfo.OtherNames} ${adminInfo.LastName}. It is currently ${formatHours}:${formatMinutes} on a ${dayWord}. Have a great day.`
         })
         .catch(error => {
             console.log(error);
