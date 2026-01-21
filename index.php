@@ -18,6 +18,9 @@ if (isset($_COOKIE['auth_token'])) {
     send_to_dashboard($access_param);
     die();
 }
+
+/*
+
 else if (isset($_POST['username']) && isset($_POST['pass'])) {
     $access_param = grab_login_from_username_pass();
     send_to_dashboard($access_param);
@@ -126,4 +129,6 @@ function grab_login_from_username_pass() {
 
     return $access_tier;
 }
+
+*/
 ?>
