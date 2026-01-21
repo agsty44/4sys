@@ -9,6 +9,7 @@ if (!isset($_POST['username']) || !isset($_POST['pass'])) {
     'result' => 'failure'
     ]);
     echo($json);
+    die();
 }
 
 $user = $_POST['username'];
@@ -27,7 +28,11 @@ $returned_hash = $query->get_result();                                          
 // if no hash present
 if ($returned_hash->num_rows == 0) {                                            // no account with that username, get out of here
     include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
-    echo('Incorrect login');
+    header('Content-Type: application/json');
+    $json = json_encode([
+    'result' => 'failure'
+    ]);
+    echo($json);
     die();
 }
 
@@ -44,6 +49,7 @@ if (!password_verify($pass, $pass_hash)) {
     'result' => 'failure'
     ]);
     echo($json);
+    die();
 }
 
 $sql = 'SELECT `LoginToken` 
