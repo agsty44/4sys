@@ -63,63 +63,34 @@ $record = $returned_token->fetch_assoc();                                       
 $access_token = $record['LoginToken'];                                          // return login token to check
 $query->close();                                                                // close query
 
-//handle existence of token
-if ($access_token == '') {
-    $uniqueness_of_token = 1;
-    // until that token returns no rows, generate a new one.
-    while ($uniqueness_of_token != 0) {
-        //upload new token
-        $token_number = random_int(0, 999999999999);                            // generate a number up to 1 trillion
-        $token_number = (string) $token_number;                                 // string conversion
-        $token_hash = password_hash($token_number,
-        PASSWORD_DEFAULT);                                                      // convert it to a bcrypt hash
+if (empty($access_token)) {
+    $new_token = bin2hex(random_bytes(16));                                     // generate new token
 
-        //check for existence of token
-        $sql = 'SELECT * FROM `People` WHERE `LoginToken` = ?';                 // count the rows
-        $query = $conn->prepare($sql);                                          // prepare
-        $query->bind_param('s', $token_hash);                                   // bind parameters
-        $query->execute();                                                      // execute
-        $token_integrity = $query->get_result();                                // get result
-        $uniqueness_of_token = $token_integrity->num_rows;                      // check uniqueness
-        }                                                                       // when we exit the loop, the token will be confirmed to be unique
-
-    $query->close();                                                            // close query
-
-    // insert the new token
     $sql = 'UPDATE `People` 
             SET `LoginToken` = ? 
-            WHERE `PersonID` = ?';                                              // update the login token that matches the person id
-    $query = $conn->prepare($sql);                                              // prepare
-    $query->bind_param('si',$token_hash, $identifier);                          // bind parameters
+            WHERE `PersonID` = ?';                                              // sql to update token
+
+    $query = $conn->prepare($sql);                                              // prepare statement for execution
+    $query->bind_param('si', $new_token, $identifier);                          // bind parameters
     $query->execute();                                                          // execute
     $query->close();                                                            // close query
+    $access_token = $new_token;                                                 // set access token to new token
 }
 
-// pull access token from db
-$sql = 'SELECT `LoginToken`
-            FROM `People` 
-            WHERE `PersonID` = ?';                                              // retrieve the login token from the db
-$query = $conn->prepare($sql);                                              // prepare statement for execution
-$query->bind_param('i', $identifier);                                       // bind parameters
-$query->execute();                                                          // execute
-$returned_token = $query->get_result();                                     // get results
-$record = $returned_token->fetch_assoc();                                   // fetch record
-$access_token = $record['LoginToken'];                                      // return login token to check
-$query->close();                                                            // close query
 
-$expire = time() + (60 * 60 * 24 * 7); // 7 days from now
+$expire = time() + (60 * 60 * 24 * 7);                                          // 7 days from now
 
 // set the cookie as we have safety flags
 setcookie(
-    'accessToken',
+    'accessToken', 
     $access_token,
     [
         'expires' => $expire,
         'path' => '/',
-        'domain' => '',           // current domain
-        'secure' => true,         // HTTPS only
-        'httponly' => true,       // not accessible via JS
-        'samesite' => 'Strict'   // CSRF mitigation
+        'domain' => '',                                                         // current domain
+        'secure' => true,                                                       // HTTPS only
+        'httponly' => true,                                                     // not accessible via JS
+        'samesite' => 'Strict'                                                  // CSRF mitigation
     ]
 );
 
