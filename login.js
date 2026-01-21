@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/api/login.php', {
             method: 'POST',
             body: new URLSearchParams({
-                'username': getElementById('username').value,
-                'pass': getElementById('pass').value
+                'username': document.getElementById('username').value,
+                'pass': document.getElementById('pass').value
             })
         })
         .then(response => {
