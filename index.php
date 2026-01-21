@@ -19,6 +19,9 @@ if (isset($_COOKIE['auth_token'])) {
     die();
 }
 
+// always include form page
+include ($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');
+
 /*
 
 else if (isset($_POST['username']) && isset($_POST['pass'])) {
