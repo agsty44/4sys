@@ -8,7 +8,12 @@ function showResults(searchQuery) {
         return;
     }
 
-    fetch(`/api/student_search.php?query=${searchQuery}`)
+    fetch('/api/student_search.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            'query': searchQuery
+        })
+    })
         .then(response => {
                 if (!response.ok) throw new Error('Api failure');
                 return response.json();
