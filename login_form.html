@@ -6,10 +6,10 @@
     </head>
     <body>
         <div id="login-form-container" class="center">
-            <form action="/index.php" method="post" class="center">
-                Username: <input type="text" name="username" placeholder="Username" required><br>
-                Password: <input type="password" name="pass" placeholder="Password" required><br>
-                <button onclick="login()">Login</button>
+            <form id="login_form" action="/index.php" method="post" class="center">
+                Username: <input type="text" name="username" id="username" placeholder="Username" required><br>
+                Password: <input type="password" name="pass" id="pass" placeholder="Password" required><br>
+                <button type="submit">Log In</button>
                 <script src="./login.js"></script>
             </form>
         </div>
