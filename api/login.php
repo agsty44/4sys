@@ -82,7 +82,7 @@ $expire = time() + (60 * 60 * 24 * 7);                                          
 
 // set the cookie as we have safety flags
 setcookie(
-    'accessToken', 
+    'auth_token', 
     $access_token,
     [
         'expires' => $expire,
