@@ -101,7 +101,7 @@ $record = $returned_token->fetch_assoc();                                   // f
 $access_token = $record['LoginToken'];                                      // return login token to check
 $query->close();                                                            // close query
 
-$expire = time() + (60 * 60 * 24 * 7); // 30 days from now
+$expire = time() + (60 * 60 * 24 * 7); // 7 days from now
 
 // set the cookie as we have safety flags
 setcookie(
