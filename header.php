@@ -63,19 +63,19 @@ function grab_login_from_cookie() {
             FROM `People` 
             WHERE `LoginToken` = ?';                                            // this is the layout of our SQL statement to return a userID.
     $query = $conn->prepare($sql);                                              // prepare statement for execution
-    $query->bind_param('s', $token);                                            // bind parameters
+    $query->bind_param('s', $token);                                           // bind parameters
     $query->execute();                                                          // execute
     $returned_id = $query->get_result();                                        // get results
 
     // handle if the cookie is bad
     if ($returned_id->num_rows == 0) {
-        setcookie('auth_token', '', time() - 1, '/');                                // delete the cookie, its bad.
+        setcookie('auth_token', '', time() - 1, '/');                           // delete the cookie, its bad.
         include($_SERVER['DOCUMENT_ROOT'] . '/login_form.html');                // send them home
         die();
     }
 
     // if the user logs in with a good token we should refresh it
-    setcookie('auth_token', $token, time() + 86400 * 7, '/');                        // set cookie life to 1 day (86400 seconds) * 7
+    setcookie('auth_token', $token, time() + 86400 * 7, '/');                   // set cookie life to 1 day (86400 seconds) * 7
 
     $record = $returned_id->fetch_assoc();                                      // fetch record
     $access_tier = $record['AccessTier'];                                       // return access level to send them to the right dashboard.
